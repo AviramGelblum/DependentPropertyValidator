@@ -1,4 +1,3 @@
-import collections
 
 class DependentPropertyValidator:
 
@@ -12,8 +11,6 @@ class DependentPropertyValidator:
 
     def validate(self, independent_property, dependent_property):
             placeholder = 1
-
-
     # endregion
 
 
@@ -37,6 +34,7 @@ class InputProperty:
         # self.input = input_property
         self.type = [type(input_property)]
         self.get_depth(input_property, 0)
+        self.depth = len(self.type)
 
     def get_depth(self, property_segment, level):
         # Uses the first branch of the iterable. For now does not confirm all other
@@ -65,3 +63,6 @@ class InputProperty:
         first_key = next(iter(dct))
         return all(isinstance(x[0],type(first_key)) and isinstance(x[1],type(dct[first_key])) for
                    x in dct.items())
+
+    def __len__(self):
+        return self.depth

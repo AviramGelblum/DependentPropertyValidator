@@ -1,8 +1,4 @@
-class Foo:
-    pass
-
-
-class Bar(Foo):
-    attr = 100
-
-x = Bar()
+from DependentPropertyValidator import DependentPropertyValidator
+DPV = DependentPropertyValidator()
+DPV.add_property_dependency([str, str])
+test = DPV.validate('ff', 'dfd')

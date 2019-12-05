@@ -1,17 +1,37 @@
 import pytest
 from DependentPropertyValidator import DependentPropertyValidator, ValidationError
 
+#region Wrappers
 def single_dependent_validation(A, B, types_list):
-        DPV = DependentPropertyValidator()
-        DPV.add_property_dependency(types_list)
-        try:
-            DPV.validate(A, B)
-            test = True
-        except ValidationError:
-            test = False
-        except:
-            raise
-        return test
+    DPV = DependentPropertyValidator(A, B)
+    DPV.add_property_dependency(types_list)
+    try:
+        DPV.validate()
+        test = True
+    except ValidationError:
+        test = False
+    except:
+        raise
+    return test
+
+def multiple_dependent_validation(A, B, types_list_list):
+    DPV = DependentPropertyValidator(A, B)
+    for type_list in types_list_list:
+        DPV.add_property_dependency(type_list)
+    try:
+        DPV.validate()
+        test = True
+    except ValidationError:
+        test = False
+    except:
+        raise
+    return test
+
+#endregion
+
+# region Type Dependency Validation Tests
+
+
 
 def test_correct_strings():
     test = single_dependent_validation('ff', 'dfd', [str, str])  # only single quotes
@@ -180,18 +200,7 @@ def test_3d_failed_nested_lists():
     assert test is False
 
 
-def multiple_dependent_validation(A, B, types_list_list):
-    DPV = DependentPropertyValidator()
-    for type_list in types_list_list:
-        DPV.add_property_dependency(type_list)
-    try:
-        DPV.validate(A, B)
-        test = True
-    except ValidationError:
-        test = False
-    except:
-        raise
-    return test
+
 
 def test_multiple_with_correct_nested_lists():
     test = multiple_dependent_validation([3, 4, 5], ['h', 'h', 'f'], [[list, list], [int, list]])
@@ -209,3 +218,10 @@ def test_multiple_with_failed_nested_lists():
                                                                       [[list, int], int]])
     assert test is False
 
+# endregion
+
+
+def test_option():
+    DPV = DependentPropertyValidator([3, 4, 5, 6], [6, 7, 8])
+    DPV.add_property_dependency([list, list], Compare='ge')
+    DPV.validate()

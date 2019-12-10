@@ -13,7 +13,6 @@ class InputProperty:
         self.depth = len(self.type)
 
     def __get_deep_types(self, separated, level: int):
-        # todo: add support for custom iterables? probably not needed, right?
         """
         Recursive private method for the extraction of the types of multi-level input.
         :param separated: input to be examined

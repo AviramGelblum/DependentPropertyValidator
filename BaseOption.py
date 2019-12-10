@@ -102,7 +102,7 @@ class CompareSize(BaseOption):
             raise ValidationError('Cannot compare input sizes. First input property has no __len__ '
                                   'method implementation.')
         if not callable(getattr(dependent_property_validator.second_input_property.input, '__len__', None)):
-            raise ValidationError('Cannot compare input sizes. Dependent input property has no __len__ '
+            raise ValidationError('Cannot compare input sizes. Second input property has no __len__ '
                                   'method implementation.')
 
         # Validate input by using a switch class which matches string condition to a function.
